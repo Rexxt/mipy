@@ -1,0 +1,37 @@
+Langue :
+    - Python 3.11.5
+
+Editeur :
+    - Visual Studio Code
+    - Python extension for VS Code
+
+Paquets pip :
+    science:
+        - numpy
+        - pandas
+        - scipy
+        - sympy
+        - matplotlib
+
+    vision:
+        - Pillow
+        - opencv-python
+
+    db:
+        - sqlite4
+        - pymongo
+
+    tui:
+        - blessed
+        - rich
+        - textual
+    
+    gui:
+        - PyQt6
+        - pygame
+        - PySimpleGUI
+
+    web:
+        - hug
+        - Flask
+        - Jinja2
