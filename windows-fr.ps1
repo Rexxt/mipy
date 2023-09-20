@@ -1,13 +1,17 @@
 ﻿Clear-Host
 
-$version="1.0.1"
+$version="1.0.2"
+Clear-Host
+Write-Host -BackgroundColor DarkBlue "Installateur de la distribution mipy $version"
+Get-Content .\ascii-art.ans
+Start-Sleep -Seconds 2
 
+Clear-Host
 Write-Host -BackgroundColor DarkBlue "Installateur de la distribution mipy $version"
 Write-Output "Voici tous les modules gérés par la distribution."
 Write-Output "Les modules Langage et Editeur sont nécessaires. Le reste est optionel et vous sera demandé."
 Get-Content .\doc\DOWNLOADS.txt
 Pause
-
 Function Test-CommandExists
 {
     Param ($command)

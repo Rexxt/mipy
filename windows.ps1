@@ -1,7 +1,13 @@
 Clear-Host
 
-$version="1.0.1"
+$version="1.0.2"
 
+Clear-Host
+Write-Host -BackgroundColor DarkBlue "mipy $version distribution installer"
+Get-Content .\ascii-art.ans
+Start-Sleep -Seconds 2
+
+Clear-Host
 Write-Host -BackgroundColor DarkBlue "mipy $version distribution installer"
 Write-Output "Here is every module that is available in the distribution."
 Write-Output "The Language and Editor modules are mandatory. Every other module is optional and will be prompted to you."
@@ -22,7 +28,7 @@ function pyinstall() {
     Write-Host -ForegroundColor Blue "Installing Python 3.11.5"
     $installer_url="https://www.python.org/ftp/python/3.11.5/python-3.11.5-amd64.exe"
     Invoke-WebRequest -URI $installer_url -OutFile "tmp/python_installer.exe"
-    tmp/python_installer.exe /passive InstallAllUsers=1 AppendPath=1
+    tmp/python_installer.exe /passive AppendPath=1
     Pause
 }
 
@@ -30,7 +36,7 @@ function vscinstall() {
     Write-Host -ForegroundColor Blue "Installing Visual Studio Code"
     $installer_url="https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user"
     Invoke-WebRequest -URI $installer_url -OutFile "tmp/vscode_installer.exe"
-    tmp/vscode_installer.exe /SILENT /ALLUSERS /NOCANCEL
+    tmp/vscode_installer.exe /SILENT /NOCANCEL
 }
 
 Clear-Host
@@ -86,10 +92,11 @@ If($execute -eq $true) {
         Clear-Host
         Write-Host -BackgroundColor DarkBlue "mipy $version > Language > pip libraries > $selected_module"
         If(Test-Path "pip/$selected_module") {
-            Write-Host -ForegroundColor Green "Libraries to install:"
+            Write-Host -ForegroundColor Blue "Libraries to install:"
             Get-Content "pip/$selected_module"
             Write-Output ""
             py -m pip install -r "pip/$selected_module"
+            Write-Host -ForegroundColor Green "Module $selected_module installed!"
         } else {
             Write-Host -ForegroundColor Red "Module $selected_module wasn't found. You can always install individual libraries later."
         }
