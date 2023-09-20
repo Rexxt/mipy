@@ -1,10 +1,10 @@
-﻿Clear-Host
+Clear-Host
 
-$version="1.0.0"
+$version="1.0.1"
 
-Write-Host -BackgroundColor DarkBlue "Installateur de la distribution mipy $version"
-Write-Output "Voici tous les modules gérés par la distribution."
-Write-Output "Les modules Langage et Editeur sont nécessaires. Le reste est optionel et vous sera demandé."
+Write-Host -BackgroundColor DarkBlue "mipy $version distribution installer"
+Write-Output "Here is every module that is available in the distribution."
+Write-Output "The Language and Editor modules are mandatory. Every other module is optional and will be prompted to you."
 Get-Content .\doc\DOWNLOADS.txt
 Pause
 
@@ -19,60 +19,60 @@ Function Test-CommandExists
 }
 
 function pyinstall() {
-    Write-Host -ForegroundColor Blue "Installation de Python 3.11.5"
+    Write-Host -ForegroundColor Blue "Installing Python 3.11.5"
     $installer_url="https://www.python.org/ftp/python/3.11.5/python-3.11.5-amd64.exe"
     Invoke-WebRequest -URI $installer_url -OutFile "tmp/python_installer.exe"
-    tmp/python_installer.exe /passive InstallAllusers=1 AppendPath=1
+    tmp/python_installer.exe /passive InstallAllUsers=1 AppendPath=1
     Pause
 }
 
 function vscinstall() {
-    Write-Host -ForegroundColor Blue "Installation de Visual Studio Code"
+    Write-Host -ForegroundColor Blue "Installing Visual Studio Code"
     $installer_url="https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user"
     Invoke-WebRequest -URI $installer_url -OutFile "tmp/vscode_installer.exe"
     tmp/vscode_installer.exe /SILENT /ALLUSERS /NOCANCEL
 }
 
 Clear-Host
-Write-Host -BackgroundColor DarkBlue "mipy $version > Langage > Python 3.11.5"
+Write-Host -BackgroundColor DarkBlue "mipy $version > Language > Python 3.11.5"
 If(-not (Test-CommandExists "py")) {
     pyinstall
 } Else {
-    Write-Host -ForegroundColor Green "Une version de Python est déjà installée :"
+    Write-Host -ForegroundColor Green "A version of Python is already installed:"
     py -V
-    $confirmation = Read-Host -Prompt "Installer Python 3.11.5 ? [écrire OUI en majuscules pour accepter, n'importe quoi d'autre pour annuler]"
-    If($confirmation -eq "OUI") {
+    $confirmation = Read-Host -Prompt "Would you like to install Python 3.11.5?`n[type YES (case-sensitive) to confirm, anything else if not]"
+    If($confirmation -eq "YES") {
         pyinstall
     }
 }
 
 Clear-Host
-Write-Host -BackgroundColor DarkBlue "mipy $version > Editeur > Visual Studio Code"
+Write-Host -BackgroundColor DarkBlue "mipy $version > Editor > Visual Studio Code"
 If(-not (Test-CommandExists "code")) {
     vscinstall
 } Else {
-    Write-Host -ForegroundColor Green "Visual Studio Code est déjà installé."
+    Write-Host -ForegroundColor Green "Visual Studio Code is already installed."
 }
 Pause
 
 Clear-Host
-Write-Host -BackgroundColor DarkBlue "mipy $version > Editeur > Extension Python"
+Write-Host -BackgroundColor DarkBlue "mipy $version > Editor > Python extension"
 $l = $(code --list-extensions)
 If($l -notcontains "ms-python.python") {
     code --install-extension "ms-python.python"
 } Else {
-    Write-Host -ForegroundColor Green "L'extension Python est déjà installée."
+    Write-Host -ForegroundColor Green "Python for VSC is already installed."
 }
 Pause
 
 Clear-Host
-Write-Host -BackgroundColor DarkBlue "mipy $version > Langue > Paquets pip"
-Write-Host -ForegroundColor DarkBlue "Voici les modules disponibles dans la distribution :"
+Write-Host -BackgroundColor DarkBlue "mipy $version > Language > pip libraries"
+Write-Host -ForegroundColor DarkBlue "Here are the available modules:"
 ForEach($item in $(Get-ChildItem .\pip)) {
     Write-Host -NoNewline "$($item.Name) "
 }
 Write-Host "`n"
-$modules = Read-Host -Prompt "Ecrivez les modules que vous souhaitez installer.`nSéparez chaque nom de module par une virgule.`nExemple : écrivez 'gui tui' si vous ne voulez que les modules gui et tui.`nSi vous voulez tous les modules, entrez *`n[Modules]"
+$modules = Read-Host -Prompt "Please type in all of the modules that you would like to install.`nYou must separate them using a space.`nExample: type 'gui tui' if you only want the gui and tui modules.`nIf you want all modules, type *`n[Modules]"
 $execute = $true
 If($modules -ne "*") {
     $module_selections = $modules.Split(" ")
@@ -84,50 +84,53 @@ If($modules -ne "*") {
 If($execute -eq $true) {
     ForEach($selected_module in $module_selections) {
         Clear-Host
-        Write-Host -BackgroundColor DarkBlue "mipy $version > Langue > Paquets pip > $selected_module"
+        Write-Host -BackgroundColor DarkBlue "mipy $version > Language > pip libraries > $selected_module"
         If(Test-Path "pip/$selected_module") {
+            Write-Host -ForegroundColor Green "Libraries to install:"
+            Get-Content "pip/$selected_module"
+            Write-Output ""
             py -m pip install -r "pip/$selected_module"
         } else {
-            Write-Host -ForegroundColor Red "Module $selected_module introuvable. Vous pouvez toujours installer des paquets individuels plus tard."
+            Write-Host -ForegroundColor Red "Module $selected_module wasn't found. You can always install individual libraries later."
         }
-        Pause
+        Start-Sleep -Seconds 1
     }
 }
 
 Clear-Host
-Write-Host -ForegroundColor Green "mipy $version a été installé !"
-Write-Host -ForegroundColor Blue "Voici quelques astuces pour vous aider :"
-Write-Host -ForegroundColor Gray -NoNewline "Pour ouvrir un dossier de travail, utilisez "
+Write-Host -ForegroundColor Green "mipy $version was successfully installed!"
+Write-Host -ForegroundColor Blue "Here are some tips to get you started:"
+Write-Host -ForegroundColor Gray -NoNewline "To open a folder, use "
 Write-Host -ForegroundColor White -NoNewline "Visual Studio Code"
-Write-Host -ForegroundColor Gray -NoNewline " ou utilisez la commande "
-Write-Host -ForegroundColor Magenta -NoNewline "code chemin/du/dossier"
+Write-Host -ForegroundColor Gray -NoNewline " or run the terminal command "
+Write-Host -ForegroundColor Magenta -NoNewline "code path/to/workspace"
 Write-Host -ForegroundColor Gray "."
 
-Write-Host -ForegroundColor Gray -NoNewline "Python inclut également l'éditeur "
+Write-Host -ForegroundColor Gray -NoNewline "Python also bundles the "
 Write-Host -ForegroundColor White -NoNewline "IDLE"
-Write-Host -ForegroundColor Gray -NoNewline ", que vous pouvez soit lancer directement soit avec la commande "
-Write-Host -ForegroundColor Magenta -NoNewline "py -m idlelib chemin/du/fichier"
+Write-Host -ForegroundColor Gray -NoNewline " editor, which you can run directly or using the command "
+Write-Host -ForegroundColor Magenta -NoNewline "python -m idlelib path/to/script"
 Write-Host -ForegroundColor Gray "."
 
-Write-Host -ForegroundColor Gray -NoNewline "Pour lancer un fichier Python depuis VS Code, utilisez "
-Write-Host -ForegroundColor White -NoNewline "fn + f5 (ou f5 si votre ordinateur n'a pas de touche fn)"
-Write-Host -ForegroundColor Gray -NoNewline " ou la commande "
-Write-Host -ForegroundColor Magenta -NoNewline "py chemin/du/fichier"
+Write-Host -ForegroundColor Gray -NoNewline "To run a Python file from VS Code, use "
+Write-Host -ForegroundColor White -NoNewline "fn + f5 (or f5 if your computer doesn't have an fn key)"
+Write-Host -ForegroundColor Gray -NoNewline " or from the command line "
+Write-Host -ForegroundColor Magenta -NoNewline "py path/to/file"
 Write-Host -ForegroundColor Gray "."
 
-Write-Host -ForegroundColor Gray -NoNewline "Si vous voulez installer des paquets Python, utilisez "
-Write-Host -ForegroundColor Magenta -NoNewline "pip install nom_du_paquet"
+Write-Host -ForegroundColor Gray -NoNewline "If you want to install Python libraries, use "
+Write-Host -ForegroundColor Magenta -NoNewline "pip install name_of_library"
 Write-Host -ForegroundColor Gray "."
 
-Write-Host -ForegroundColor Gray -NoNewline "Si vous voulez mettre à jour des paquets Python, utilisez "
-Write-Host -ForegroundColor Magenta -NoNewline "pip install --upgrade nom_du_paquet"
+Write-Host -ForegroundColor Gray -NoNewline "If you want to upgrade Python libraries, use "
+Write-Host -ForegroundColor Magenta -NoNewline "pip install --upgrade name_of_library"
 Write-Host -ForegroundColor Gray "."
 
-Write-Host -ForegroundColor Gray -NoNewline "Si vous voulez supprimer des paquets Python, utilisez "
-Write-Host -ForegroundColor Magenta -NoNewline "pip uninstall nom_du_paquet"
+Write-Host -ForegroundColor Gray -NoNewline "If you want to remove Python libraries, use "
+Write-Host -ForegroundColor Magenta -NoNewline "pip uninstall name_of_library"
 Write-Host -ForegroundColor Gray "."
 
-Write-Host -ForegroundColor Gray -NoNewline "Si vous voulez voir tous les paquets Python installés, utilisez "
+Write-Host -ForegroundColor Gray -NoNewline "If you want to see all Python libraries, use "
 Write-Host -ForegroundColor Magenta -NoNewline "pip list"
 Write-Host -ForegroundColor Gray "."
 

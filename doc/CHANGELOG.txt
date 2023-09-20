@@ -1,0 +1,43 @@
+Version 1.0.1:
+Installer:
+    + Modules now display which pip libraries will be installed.
+    + At the end of a module installation, the installer will skip towards the next module automatically.
+
+Version 1.0.0:
+Language:
+    + Python 3.11.5
+
+Editor:
+    + Visual Studio Code
+    + Python extension for VS Code
+
+PIP Libraries:
+    science:
+        + numpy
+        + pandas
+        + scipy
+        + sympy
+        + matplotlib
+
+    vision:
+        + Pillow
+        + opencv-python
+
+    db:
+        + sqlite4
+        + pymongo
+
+    tui:
+        + blessed
+        + rich
+        + textual
+    
+    gui:
+        + PyQt6
+        + pygame
+        + PySimpleGUI
+
+    web:
+        + hug
+        + Flask
+        + Jinja2

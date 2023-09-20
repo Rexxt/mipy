@@ -1,11 +1,11 @@
-Langue :
+Language:
     - Python 3.11.5
 
-Editeur :
+Editor:
     - Visual Studio Code
     - Python extension for VS Code
 
-Paquets pip :
+PIP Libraries:
     science:
         - numpy
         - pandas
