@@ -1,6 +1,6 @@
 Clear-Host
 
-$version="1.0.2"
+$version="1.1.0"
 
 Clear-Host
 Write-Host -BackgroundColor DarkBlue "mipy $version distribution installer"

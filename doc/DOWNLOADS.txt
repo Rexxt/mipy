@@ -35,3 +35,9 @@ PIP Libraries:
         - hug
         - Flask
         - Jinja2
+
+    automation:
+        - inputs
+        - keyboard
+        - mouse
+        - pyautogui

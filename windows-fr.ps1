@@ -1,6 +1,7 @@
 ﻿Clear-Host
 
-$version="1.0.2"
+$version="1.1.0"
+
 Clear-Host
 Write-Host -BackgroundColor DarkBlue "Installateur de la distribution mipy $version"
 Get-Content .\ascii-art.ans
