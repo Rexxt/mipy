@@ -1,4 +1,4 @@
 mipy = MIzu PYthon distribution
 collection of scripts to install a fully-featured Python distribution
 
-everything that mipy sets up is ocated in DOWNLOADS.txt
+everything that mipy sets up is located in DOWNLOADS.txt
