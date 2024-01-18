@@ -1,6 +1,6 @@
 ﻿Clear-Host
 
-$version="1.1.0"
+$version="2.0.0"
 
 Clear-Host
 Write-Host -BackgroundColor DarkBlue "Installateur de la distribution mipy $version"
@@ -24,8 +24,8 @@ Function Test-CommandExists
 }
 
 function pyinstall() {
-    Write-Host -ForegroundColor Blue "Installation de Python 3.11.5"
-    $installer_url="https://www.python.org/ftp/python/3.11.5/python-3.11.5-amd64.exe"
+    Write-Host -ForegroundColor Blue "Installation de Python 3.12.1"
+    $installer_url="https://www.python.org/ftp/python/3.12.1/python-3.12.1-amd64.exe"
     Invoke-WebRequest -URI $installer_url -OutFile "tmp/python_installer.exe"
     tmp/python_installer.exe /passive InstallAllusers=1 AppendPath=1
     Pause
@@ -39,13 +39,13 @@ function vscinstall() {
 }
 
 Clear-Host
-Write-Host -BackgroundColor DarkBlue "mipy $version > Langage > Python 3.11.5"
+Write-Host -BackgroundColor DarkBlue "mipy $version > Langage > Python 3.12.1"
 If(-not (Test-CommandExists "py")) {
     pyinstall
 } Else {
     Write-Host -ForegroundColor Green "Une version de Python est déjà installée :"
     py -V
-    $confirmation = Read-Host -Prompt "Installer Python 3.11.5 ? [écrire OUI en majuscules pour accepter, n'importe quoi d'autre pour annuler]"
+    $confirmation = Read-Host -Prompt "Installer Python 3.12.1 ? [écrire OUI en majuscules pour accepter, n'importe quoi d'autre pour annuler]"
     If($confirmation -eq "OUI") {
         pyinstall
     }
@@ -77,7 +77,7 @@ ForEach($item in $(Get-ChildItem .\pip)) {
     Write-Host -NoNewline "$($item.Name) "
 }
 Write-Host "`n"
-$modules = Read-Host -Prompt "Ecrivez les modules que vous souhaitez installer.`nSéparez chaque nom de module par une virgule.`nExemple : écrivez 'gui tui' si vous ne voulez que les modules gui et tui.`nSi vous voulez tous les modules, entrez *`n[Modules]"
+$modules = Read-Host -Prompt "Ecrivez les modules que vous souhaitez installer.`nSéparez chaque nom de module par un espace.`nExemple : écrivez 'gui tui' si vous ne voulez que les modules gui et tui.`nSi vous voulez tous les modules, entrez *`n[Modules]"
 $execute = $true
 If($modules -ne "*") {
     $module_selections = $modules.Split(" ")
@@ -90,11 +90,11 @@ If($execute -eq $true) {
     ForEach($selected_module in $module_selections) {
         Clear-Host
         Write-Host -BackgroundColor DarkBlue "mipy $version > Langue > Paquets pip > $selected_module"
-        If(Test-Path "pip/$selected_module") {
+        If(Test-Path "$selected_module") {
             Write-Host -ForegroundColor Green "Paquets à installer :"
-            Get-Content "pip/$selected_module"
+            Get-Content "$selected_module"
             Write-Output ""
-            py -m pip install -r "pip/$selected_module"
+            py -m pip install -r "$selected_module"
         } else {
             Write-Host -ForegroundColor Red "Module $selected_module introuvable. Vous pouvez toujours installer des paquets individuels plus tard."
         }

@@ -1,6 +1,6 @@
 Clear-Host
 
-$version="1.1.0"
+$version="2.0.0"
 
 Clear-Host
 Write-Host -BackgroundColor DarkBlue "mipy $version distribution installer"
@@ -25,8 +25,8 @@ Function Test-CommandExists
 }
 
 function pyinstall() {
-    Write-Host -ForegroundColor Blue "Installing Python 3.11.5"
-    $installer_url="https://www.python.org/ftp/python/3.11.5/python-3.11.5-amd64.exe"
+    Write-Host -ForegroundColor Blue "Installing Python 3.12.1"
+    $installer_url="https://www.python.org/ftp/python/3.12.1/python-3.12.1-amd64.exe"
     Invoke-WebRequest -URI $installer_url -OutFile "tmp/python_installer.exe"
     tmp/python_installer.exe /passive AppendPath=1
     Pause
@@ -40,13 +40,13 @@ function vscinstall() {
 }
 
 Clear-Host
-Write-Host -BackgroundColor DarkBlue "mipy $version > Language > Python 3.11.5"
+Write-Host -BackgroundColor DarkBlue "mipy $version > Language > Python 3.12.1"
 If(-not (Test-CommandExists "py")) {
     pyinstall
 } Else {
     Write-Host -ForegroundColor Green "A version of Python is already installed:"
     py -V
-    $confirmation = Read-Host -Prompt "Would you like to install Python 3.11.5?`n[type YES (case-sensitive) to confirm, anything else if not]"
+    $confirmation = Read-Host -Prompt "Would you like to install Python 3.12.1?`n[type YES (case-sensitive) to confirm, anything else if not]"
     If($confirmation -eq "YES") {
         pyinstall
     }
@@ -91,11 +91,11 @@ If($execute -eq $true) {
     ForEach($selected_module in $module_selections) {
         Clear-Host
         Write-Host -BackgroundColor DarkBlue "mipy $version > Language > pip libraries > $selected_module"
-        If(Test-Path "pip/$selected_module") {
+        If(Test-Path "$selected_module") {
             Write-Host -ForegroundColor Blue "Libraries to install:"
-            Get-Content "pip/$selected_module"
+            Get-Content "$selected_module"
             Write-Output ""
-            py -m pip install -r "pip/$selected_module"
+            py -m pip install -r "$selected_module"
             Write-Host -ForegroundColor Green "Module $selected_module installed!"
         } else {
             Write-Host -ForegroundColor Red "Module $selected_module wasn't found. You can always install individual libraries later."
