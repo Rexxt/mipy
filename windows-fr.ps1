@@ -90,13 +90,13 @@ If($execute -eq $true) {
     ForEach($selected_module in $module_selections) {
         Clear-Host
         Write-Host -BackgroundColor DarkBlue "mipy $version > Langue > Paquets pip > $selected_module"
-        If(Test-Path "$selected_module") {
+        If(Test-Path "$PSScriptRoot/$selected_module") {
             Write-Host -ForegroundColor Green "Paquets à installer :"
-            Get-Content "$selected_module"
+            Get-Content "$PSScriptRoot/$selected_module"
             Write-Output ""
-            py -m pip install -r "$selected_module"
+            py -m pip install -r "$PSScriptRoot/$selected_module"
         } else {
-            Write-Host -ForegroundColor Red "Module $selected_module introuvable. Vous pouvez toujours installer des paquets individuels plus tard."
+            Write-Host -ForegroundColor Red "Module $PSScriptRoot/$selected_module introuvable. Vous pouvez toujours installer des paquets individuels plus tard."
         }
         Start-Sleep -Seconds 1
     }

@@ -91,14 +91,14 @@ If($execute -eq $true) {
     ForEach($selected_module in $module_selections) {
         Clear-Host
         Write-Host -BackgroundColor DarkBlue "mipy $version > Language > pip libraries > $selected_module"
-        If(Test-Path "$selected_module") {
+        If(Test-Path "$PSScriptRoot/$selected_module") {
             Write-Host -ForegroundColor Blue "Libraries to install:"
-            Get-Content "$selected_module"
+            Get-Content "$PSScriptRoot/$selected_module"
             Write-Output ""
-            py -m pip install -r "$selected_module"
-            Write-Host -ForegroundColor Green "Module $selected_module installed!"
+            py -m pip install -r "$PSScriptRoot/$selected_module"
+            Write-Host -ForegroundColor Green "Module $PSScriptRoot/$selected_module installed!"
         } else {
-            Write-Host -ForegroundColor Red "Module $selected_module wasn't found. You can always install individual libraries later."
+            Write-Host -ForegroundColor Red "Module $PSScriptRoot/$selected_module wasn't found. You can always install individual libraries later."
         }
         Start-Sleep -Seconds 1
     }
