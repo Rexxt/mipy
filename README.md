@@ -12,6 +12,6 @@ Simple, suckless, no-bullshit Python distribution for new and experienced progra
   - [ ] PyCharm
   - [ ] Spyder
   - [ ] Homemade editor (possibly, one day)
-- [ ] New version (`2.x.y`) using Python 3.12
-- [ ] Make editor cross-platform
+- [x] ~~New version (`2.x.y`) using Python 3.12~~
+- [ ] Make installer cross-platform
 - [ ] Distribution management script
